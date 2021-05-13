@@ -3,7 +3,7 @@ from ..features.feature_engineering import feature_engineering
 from app import cos, init_cols
 
 
-def make_dataset(data, model_info, model_type='RandomForest'):
+def make_dataset(data, model_info, cols_to_remove, model_type='RandomForest'):
 
     """
         Función que permite crear el dataset usado para el entrenamiento
@@ -23,7 +23,7 @@ def make_dataset(data, model_info, model_type='RandomForest'):
     print('---> Getting data')
     data_df = get_raw_data_from_request(data)
     print('---> Transforming data')
-    data_df = transform_data(data_df, model_info)
+    data_df = transform_data(data_df, model_info, cols_to_remove)
     print('---> Feature engineering')
     data_df = feature_engineering(data_df)
     print('---> Preparing data for training')
