@@ -22,11 +22,13 @@ def predict_pipeline(data, model_info_db_name='mis_modelos'):
 
     # Carga de la configuración de entrenamiento
     model_config = load_model_config(model_info_db_name)['model_config']
+    print(model_config)
     # columnas a retirar
     cols_to_remove = model_config['cols_to_remove']
-
+    print(cols_to_remove)
     # obteniendo la información del modelo en producción
     model_info = get_best_model_info(model_info_db_name)
+    print(model_info)
     # cargando y transformando los datos de entrada
     data_df = make_dataset(data, model_info, cols_to_remove)
 
@@ -34,12 +36,13 @@ def predict_pipeline(data, model_info_db_name='mis_modelos'):
     model_name = model_info['name']+'.pkl'
     print('------> Loading the model {} object from the cloud'.format(model_name))
     model = load_model(model_name)
-
+    #model = load_model("model_1621097730.pkl")
+    print(model)
     # realizando la inferencia con los datos de entrada
     return model.predict(data_df).tolist()
 
 
-def load_model(name, bucket_name='models-uem'):
+def load_model(name, bucket_name='uem-models-mzs'):
     """
          Función para cargar el modelo en IBM COS
 

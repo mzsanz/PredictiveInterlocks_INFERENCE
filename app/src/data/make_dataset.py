@@ -21,7 +21,10 @@ def make_dataset(data, model_info, cols_to_remove, model_type='RandomForest'):
     """
 
     print('---> Getting data')
+    print(data)
+    print(init_cols)
     data_df = get_raw_data_from_request(data)
+    print(data_df)
     print('---> Transforming data')
     data_df = transform_data(data_df, model_info, cols_to_remove)
     
@@ -57,7 +60,10 @@ def transform_data(data_df, model_info, cols_to_remove):
     """
 
     print('------> Removing unnecessary columns')
+    print(cols_to_remove)
+    print(data_df)
     data_df = remove_unwanted_columns(data_df, cols_to_remove)
+    print(data_df)
 
     #Establezco como indice la columna 'index'
     data_df.set_index('index', inplace=True) 

@@ -34,7 +34,7 @@ def predict_route():
         Returns:
            dict.  Mensaje de salida (predicción)
     """
-
+     
     # Obtener los datos pasados por el request
     data = request.get_json()
 

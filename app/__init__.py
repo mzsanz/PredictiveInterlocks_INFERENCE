@@ -13,8 +13,7 @@ COS_AUTH_ENDPOINT = "https://iam.cloud.ibm.com/identity/token"
 
 # ruta del directorio ráiz del proyecto
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-init_cols = ["PassengerId", "Pclass", "Name", "Sex", "Age", "SibSp",
-             "Parch", "Ticket", "Fare", "Cabin", "Embarked"]
+init_cols = ["index","Time","V1","V2","V3","V4","V5","V6","V7","V8","V9","V10","V11","V12","V13","V14","V15","V16","V17","V18","V19","V20","V21","V22","V23","V24","V25","V26","V27","V28","Amount"]
 
 # conexión a servicios de IBM Cloud (VCAP_SERVICES) usando variables de entorno o fichero local
 # Variable de entorno (Despliegue)
