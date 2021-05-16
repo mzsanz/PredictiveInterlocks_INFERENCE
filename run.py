@@ -22,7 +22,7 @@ def root():
         Returns:
            dict.  Mensaje de salida
     """
-    return {'Proyecto':'Mod. 4 - Ciclo de vida de modelos IA'}
+    return {'Actividad 2':'Prediccion Fraude: PREDICT'}
 
 
 # ruta para el lanzar el pipeline de inferencia (Método POST)
@@ -41,7 +41,7 @@ def predict_route():
     # Lanzar la ejecución del pipeline de inferencia
     y_pred = predict_pipeline(data)
 
-    return {'Predicted value': y_pred}
+    return {'Predicted value for fraud prediction': y_pred}
 
 
 # main

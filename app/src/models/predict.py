@@ -3,7 +3,7 @@ from app import cos, client
 from cloudant.query import Query
 
 
-def predict_pipeline(data, model_info_db_name='models-db'):
+def predict_pipeline(data, model_info_db_name='mis_modelos'):
 
     """
         Función para gestionar el pipeline completo de inferencia
