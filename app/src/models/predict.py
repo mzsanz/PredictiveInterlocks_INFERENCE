@@ -3,73 +3,71 @@ from app import cos, client
 from cloudant.query import Query
 
 
-def predict_pipeline(data, model_info_db_name='mis_modelos'):
+def predict_pipeline(data, model_info_db_name='predictive-interlocks-model'):
 
     """
-        Función para gestionar el pipeline completo de inferencia
-        del modelo.
+        Function that implements the full inference pipeline of the model.
 
         Args:
-            path (str):  Ruta hacia los datos.
+            path (str):  Path to data.
 
         Kwargs:
-            model_info_db_name (str):  base de datos a usar para almacenar
-            la info del modelo.
+            model_info_db_name (str):  database to store model info.
 
         Returns:
-            list. Lista con las predicciones hechas.
+            list. List with the predictions.
     """
 
-    # Carga de la configuración de entrenamiento
+    # Load of the training model configuration
     model_config = load_model_config(model_info_db_name)['model_config']
     print(model_config)
-    # columnas a retirar
+    # columns to remove
     cols_to_remove = model_config['cols_to_remove']
     print(cols_to_remove)
-    # obteniendo la información del modelo en producción
+    # obtaining the info from the model in production
     model_info = get_best_model_info(model_info_db_name)
     print(model_info)
-    # cargando y transformando los datos de entrada
+    # Loading and transforming the input data
     data_df = make_dataset(data, model_info, cols_to_remove)
 
-    # Descargando el objeto del modelo
+    # Downloading the model object
     model_name = model_info['name']+'.pkl'
     print('------> Loading the model {} object from the cloud'.format(model_name))
     model = load_model(model_name)
     #model = load_model("model_1621097730.pkl")
     print(model)
-    # realizando la inferencia con los datos de entrada
+    # doing the inference with the input data
     return model.predict(data_df).tolist()
 
 
 def load_model(name, bucket_name='uem-models-mzs'):
     """
-         Función para cargar el modelo en IBM COS
+         Function to load the model in IBM COS
 
          Args:
-             name (str):  Nombre de objeto en COS a cargar.
+             name (str):  Name of the object in COS to load.
 
          Kwargs:
-             bucket_name (str):  depósito de IBM COS a usar.
+             bucket_name (str):  bucket of IBM COS to be used.
 
         Returns:
-            obj. Objeto descargado.
+            obj. Downloaded object.
      """
     return cos.get_object_in_cos(name, bucket_name)
 
 
 def get_best_model_info(db_name):
     """
-         Función para cargar la info del modelo de IBM Cloudant
+         Function to load the model info from IBM Cloudant
 
          Args:
-             db_name (str):  base de datos a usar.
+             db_name (str):  database to use.
 
          Kwargs:
-             bucket_name (str):  depósito de IBM COS a usar.
+             bucket_name (str):  IBM COS bucket to be used.
 
         Returns:
-            dict. Info del modelo.
+            dict. Model info.
      """
     db = client.get_database(db_name)
     query = Query(db, selector={'status': {'$eq': 'in_production'}})
@@ -78,13 +76,13 @@ def get_best_model_info(db_name):
 
 def load_model_config(db_name):
     """
-        Función para cargar la info del modelo desde IBM Cloudant.
+        Function to load the model info from IBM Cloudant.
 
         Args:
-            db_name (str):  Nombre de la base de datos.
+            db_name (str):  database.
 
         Returns:
-            dict. Documento con la configuración del modelo.
+            dict. Document with the model config.
     """
     db = client.get_database(db_name)
     query = Query(db, selector={'_id': {'$eq': 'model_config'}})

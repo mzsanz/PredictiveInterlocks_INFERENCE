@@ -3,14 +3,14 @@
 def feature_engineering(data_df):
 
     """
-        Función para encapsular la tarea de ingeniería de variables
+        Function for Feature Engineering
 
         Args:
-           data_df (DataFrame):  Dataset de entrada.
+           data_df (DataFrame):  Input Dataset.
 
         Returns:
-           DataFrame. Datasets de salida.
+           DataFrame. Output Dataset.
     """
-    #Not used in this problem
+    #Not used as it is part of the data transformation function
     
     return data_df.copy()

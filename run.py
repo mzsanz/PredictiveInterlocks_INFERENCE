@@ -2,7 +2,8 @@ from flask import Flask, request
 import os
 from app.src.models.predict import predict_pipeline
 import warnings
-# Quitar warnings innecesarios de la salida
+
+# Remove unneeded warnings
 warnings.filterwarnings('ignore')
 
 # -*- coding: utf-8 -*-
@@ -13,35 +14,35 @@ app = Flask(__name__)
 port = int(os.getenv('PORT', 8000))
 
 
-# usando el decorador @app.route para gestionar los enrutadores (Método GET)
+# using @app.route to manage routers (GET method)
 @app.route('/', methods=['GET'])
 def root():
     """
-        Función para gestionar la salida de la ruta raíz.
+        Function to manage the output from root path.
 
         Returns:
-           dict.  Mensaje de salida
+           dict.  Output message
     """
-    return {'Actividad 2':'Prediccion Fraude: PREDICT'}
+    return {'Project':'Predictive Interlocks'}
 
 
-# ruta para el lanzar el pipeline de inferencia (Método POST)
+# path to start the inference pipeline (POST method)
 @app.route('/predict', methods=['POST'])
 def predict_route():
     """
-        Función de lanzamiento del pipeline de inferencia.
+        Function to start the inference pipeline.
 
         Returns:
-           dict.  Mensaje de salida (predicción)
+           dict.  Output message (prediction)
     """
      
-    # Obtener los datos pasados por el request
+    # Obtain data from the request
     data = request.get_json()
 
-    # Lanzar la ejecución del pipeline de inferencia
+    # Start the execution of the inference pipeline
     y_pred = predict_pipeline(data)
 
-    return {'Predicted value for fraud prediction': y_pred}
+    return {'Predicted BP': y_pred}
 
 
 # main
