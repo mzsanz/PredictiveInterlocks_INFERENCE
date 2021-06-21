@@ -39,6 +39,8 @@ def predict_route():
     # Obtain data from the request
     data = request.get_json()
 
+    print(data)
+
     # Start the execution of the inference pipeline
     y_pred = predict_pipeline(data)
 
