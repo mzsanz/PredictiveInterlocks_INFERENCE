@@ -22,12 +22,10 @@ def make_dataset(data, model_info, cols_to_remove):
 
     print('---> Getting data')
     print(data)
-    print(init_cols)
     data_df = get_raw_data_from_request(data)
-    print(data_df)
     print('---> Transforming data and making Feature Engineering')
     data_df = transform_data(data_df, model_info, cols_to_remove)
-    print('---> Inputing and scaling')
+    print('---> Inputing and Scaling')
     data_df = pre_train_data_prep(data_df, model_info)
     
     return data_df.copy()
@@ -63,26 +61,18 @@ def transform_data(data_df, model_info, cols_to_remove):
     # Removing senseless data related to 'impossible' beam destinations
     print('------> Removing senseless data')
     data_df = remove_senseless(data_df)
-    print(data_df)
 
     #Adding new predictors (Feature Engineering)
     print('------> Adding new predictors')
     data_df = add_predictors(data_df)
-    print(data_df)
 
     #Removing rows with BM 'No beam'
     print('------> Removing data with BM=NoBeam')
     data_df = remove_rows_BM_zero(data_df)
-    print(data_df)
 
     # Removing BM column
     print('------> Removing BM columns')
-    print(cols_to_remove)
     data_df = remove_unwanted_columns(data_df, cols_to_remove)
-    print(data_df)
-
-    #Establezco como indice la columna 'index'
-    #data_df.set_index('index', inplace=True) 
 
     return data_df.copy()
 
@@ -188,7 +178,6 @@ def input_missing_values(data_df, key):
     # obtain the SimpleImputer object from  COS
     imputer = cos.get_object_in_cos(key)
     data_df = pd.DataFrame(imputer.transform(data_df), columns=data_df.columns)
-    print(data_df)
 
     return data_df.copy()
 
