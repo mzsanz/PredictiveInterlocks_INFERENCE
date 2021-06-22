@@ -28,7 +28,7 @@ def make_dataset(data, model_info, cols_to_remove):
     print('---> Transforming data and making Feature Engineering')
     data_df = transform_data(data_df, model_info, cols_to_remove)
     print('---> Inputing and scaling')
-    data_df = pre_train_data_prep(data_df)
+    data_df = pre_train_data_prep(data_df, model_info)
     
     return data_df.copy()
 
@@ -152,7 +152,7 @@ def remove_unwanted_columns(df, cols_to_remove):
     return df.drop(columns=cols_to_remove)
 
 
-def pre_train_data_prep(data_df):
+def pre_train_data_prep(data_df, model_info):
     """
         Function that makes the last transformations on the dataset NULL imputing and scaling
         Args:
@@ -163,16 +163,18 @@ def pre_train_data_prep(data_df):
     """
 
     # NULL imputing
-    print('------> Inputing missing values')
-    data_df = input_missing_values(data_df)
+    print('------> Getting imputer from cos')
+    imputer_key = model_info['objects']['imputer']+'.pkl'
+    data_df = input_missing_values(data_df, imputer_key)
 
     # Scaling
-    print('------> Scaling features')
-    data_df = scale_data(data_df)
+    print('------> Getting scaler from cos')
+    scaler_key = model_info['objects']['scaler']+'.pkl'
+    data_df = scale_data(data_df, scaler_key)
 
     return data_df.copy()
 
-def input_missing_values(data_df):
+def input_missing_values(data_df, key):
     """
         Function for NULLs imputing
         Args:
@@ -181,15 +183,16 @@ def input_missing_values(data_df):
         Returns:
            DataFrame. transformed dataset.
     """
-    # create an imputer that fills with 0 the potential NULLs 
-    imputer = SimpleImputer(strategy='constant', fill_value=0)
-
-    # imputing dataset
-    data_df = pd.DataFrame(imputer.fit_transform(data_df), columns=data_df.columns)
+    
+    print('------> Inputing missing values')
+    # obtain the SimpleImputer object from  COS
+    imputer = cos.get_object_in_cos(key)
+    data_df = pd.DataFrame(imputer.transform(data_df), columns=data_df.columns)
+    print(data_df)
 
     return data_df.copy()
 
-def scale_data(data_df):
+def scale_data(data_df, key):
     """
         Function to scale variables
         Args:
@@ -198,10 +201,10 @@ def scale_data(data_df):
            DataFrame. dataset transformed.
     """
 
-    # objeto de escalado en el rango (0,1)
-    scaler = StandardScaler()
-    # scaling dataset
-    data_df = pd.DataFrame(scaler.fit_transform(data_df))
+    print('------> Scaling values')
+    # obtain the Scaled object from  COS
+    scaler = cos.get_object_in_cos(key)
+    data_df = pd.DataFrame(scaler.transform(data_df), columns=data_df.columns)
 
     return data_df.copy()
 
